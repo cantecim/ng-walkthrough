@@ -29,7 +29,8 @@ angular.module('ng-walkthrough', [])
                 iconPaddingLeft: '@',
                 iconPaddingTop: '@',
                 onWalkthroughShow: '&',
-                onWalkthroughHide: '&'
+                onWalkthroughHide: '&',
+                focusMarginTop: '='
             },
             link: function (scope, element, attrs, ctrl, $transclude) {
                 var getIcon = function(icon){
@@ -104,6 +105,7 @@ angular.module('ng-walkthrough', [])
 
                 //Sets the walkthrough focus hole on given params with padding
                 var setFocus = function(left, top, width, height){
+                    top += scope.focusMarginTop;
                     var holeDimensions =
                         "left:" + (left - PADDING_HOLE) + "px;" +
                         "top:" + (top - PADDING_HOLE) + "px;" +
@@ -137,6 +139,7 @@ angular.module('ng-walkthrough', [])
 
                 //Sets the icon displayed according to directive argument
                 var setIconAndText = function(iconLeft, iconTop, paddingLeft, paddingTop){
+                    iconTop += scope.focusMarginTop;
                     var iconHeight = scope.walkthroughIconElement[0].offsetHeight;
                     var iconWidth = scope.walkthroughIconElement[0].offsetWidth;
                     var iconLeftWithPadding = iconLeft + paddingLeft;
@@ -202,8 +205,8 @@ angular.module('ng-walkthrough', [])
                     if (angularElement.length > 0) {
                         var width = angularElement[0].offsetWidth;
                         var height = angularElement[0].offsetHeight;
-                        var left = angularElement[0].offsetLeft;
-                        var top = angularElement[0].offsetTop;
+                        var left = $(focusElement).offset().left;
+                        var top = $(focusElement).offset().top;
                         setFocus(left, top, width, height);
                         var paddingLeft = parseFloat(iconPaddingLeft);
                         var paddingTop = parseFloat(iconPaddingTop);
